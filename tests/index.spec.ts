@@ -26,6 +26,7 @@ describe('MessageEventEmitterClient', () => {
 describe('MessageEventEmitterClient', () => {
   it('Deberia el cliente devolver el json', (done) => {
     const socket = new EventEmitter();
+    
     const client = new MessageEventEmitterClient(socket);
 
     client.on('message', (message) => {
