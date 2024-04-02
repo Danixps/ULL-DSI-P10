@@ -1,15 +1,22 @@
-import "mocha";
-import { expect } from "chai";
-import {funcion1} from "../src/index.js";
+import {expect} from 'chai';
+import 'mocha';
+import {connect} from 'net';
+import {EventEmitter} from 'events';
+import {MessageEventEmitterClient} from '../src/eventEmitterClient.js';
 
-describe("Pruebas sobre Template", () => {
-  it("operaciones con Lwectura", () => {
-    expect(true).to.equal(true);
-  });
-});
+describe('MessageEventEmitterClient', () => {
+  it('Should emit a message event once it gets a complete message', (done) => {
+    const socket = new EventEmitter();
+    const client = new MessageEventEmitterClient(socket);
 
-describe("Pruebas sobre Template", () => {
-  it("operaciones con Lwectura", () => {
-    expect(funcion1()).to.equal(1);
+    client.on('message', (message) => {
+      expect(message).to.be.eql({ 'type': 'command', 'content': 'ls' });
+      expect(message).to.be.eql({ 'type': message.type, 'content': message.content });
+      done();
+    });
+
+    socket.emit('data', '{"type": "command" ');
+    socket.emit('data', ', "content": "ls"}');
+    socket.emit('data', '\n');
   });
 });
