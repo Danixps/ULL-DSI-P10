@@ -40,6 +40,7 @@ client.on('data', (dataJSON) => {
   }
 });
 
+
 process.stdin.on('data', (data) => {
     const input = data.toString().trim(); // Obtener la entrada del usuario sin espacios en blanco
   
