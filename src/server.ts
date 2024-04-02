@@ -26,11 +26,8 @@ net
         });
 
         exe.on("close", (code) => {
-          console.log(`Child process exited with code ${code}`);
-          connection.write(
-            JSON.stringify({ type: "respuesta", content: commandOutput }) +
-              "\n",
-          );
+          console.log(`Child process exited with codee ${code}`);
+          connection.write( JSON.stringify({ type: "respuesta", content: commandOutput }) + "\n");
         });
       } else if (message.type === "respuesta") {
         console.log(`Salida:\n${message.content}`);

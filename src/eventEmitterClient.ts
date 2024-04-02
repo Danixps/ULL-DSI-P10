@@ -1,13 +1,16 @@
+import { Socket } from 'net';
 import {EventEmitter} from 'events';
 
 export class MessageEventEmitterClient extends EventEmitter {
+    private connection: EventEmitter;
   constructor(connection: EventEmitter) {
+    
     super();
+    this.connection = connection;
 
     let wholeData = '';
     connection.on('data', (dataChunk) => {
       wholeData += dataChunk;
-
       let messageLimit = wholeData.indexOf('\n');
       while (messageLimit !== -1) {
         const message = wholeData.substring(0, messageLimit);
@@ -16,5 +19,10 @@ export class MessageEventEmitterClient extends EventEmitter {
         messageLimit = wholeData.indexOf('\n');
       }
     });
+    
   }
+  getsocket(): Socket {
+    return this.connection as Socket;
+    }
+
 }
