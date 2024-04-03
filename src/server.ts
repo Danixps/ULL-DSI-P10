@@ -33,13 +33,17 @@ net
           else if(message.option === 'character'){
             Output = commandOutput.split(' ')[4];
           } else{
-            Output = 'Opcion inválida';
+            Output = 'Opcion inválida. Escoja (line, caracter o word)';
           }
         });
 
         exe.on("close", (code) => {
           console.log(`Child process exited with codee ${code}`);
-          connection.write( JSON.stringify({ type: "respuesta", content: Output }) + "\n");
+          if(code === 1) {
+            connection.write( JSON.stringify({ type: "error_file", content: Output }) + "\n");
+          } else {
+            connection.write( JSON.stringify({ type: "respuesta", content: Output }) + "\n");
+          }
         });
       } else if (message.type === "respuesta") {
         console.log(`Salida:\n${message.content}`);
