@@ -22,6 +22,7 @@ client.on('message', (message) => {
     client.getsocket().write(JSON.stringify({ type: 'command', content: file, option : option1 }) + '\n');
   } else if (message.type === 'respuesta') {
     console.log(`Salida:\n ${message.content}`);
+    client.getsocket().end();
   } else if(message.type === "error_file"){
     console.log(`El archivo no existe o ha ocurrido un error al procesarlo`);
   } else {
@@ -37,7 +38,6 @@ client.on('message', (message) => {
 process.stdin.on('data', (data) => {
     const input = data.toString().trim();
     client.getsocket().write(JSON.stringify({ type: 'command', content: input }) + '\n');
-  //mandar un fichero y linea o caracter
   });
 
 }
