@@ -1,5 +1,5 @@
 import net from "net";
-import { spawn } from "child_process";
+import { exec, spawn } from "child_process";
 
 /**
  * Descripcion: creamos el servidor
@@ -19,6 +19,7 @@ net
       const message = JSON.parse(dataJSON.toString());
 
       if (message.type === "command") {
+        
         console.log(`Received command: ${message.content}`);
         const commands = message.content.split(" ");
         const file = commands[0];
@@ -27,8 +28,10 @@ net
         console.log(`Option: ${option}`);
 
         const exe = spawn('wc', [file]);
+
         let commandOutput = "";
         let Output = "";
+
 
         exe.stdout.on("data", (piece) => {
           commandOutput += piece;
@@ -36,8 +39,8 @@ net
              Output = commandOutput.split(' ')[1];
           } else if(message.option === 'word'){
             Output = commandOutput.split(' ')[3];
-            
           }
+
           else if(message.option === 'character'){
             Output = commandOutput.split(' ')[4];
           } else{
@@ -68,9 +71,7 @@ net
 
 
     process.stdin.on("data", (data) => {
-      const input = data.toString().trim(); // Obtener la entrada del usuario sin espacios en blanco
-
-      // Enviar la entrada del usuario al servidor
+      const input = data.toString().trim();
       connection.write(JSON.stringify({ type: "command", content: input }) + "\n");
     });
 
